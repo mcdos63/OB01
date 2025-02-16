@@ -1,12 +1,18 @@
+import tkinput as tk
 class Store:
     def __init__(self, name, address, items: dict = None):
         self.name = name
         self.address = address
         self.items = items if items is not None else {}
 
+    @tk.input_decorator
     def add_item(self, product, price):
-        'Добавление товара в магазин'
-        self.items[product] = price
+        """Добавление товара в магазин"""
+        if price is not None:
+            self.items[product] = price
+            print(f"Товар '{product}' с ценой {price} добавлен в магазин!")
+        else:
+            print("Неверная цена товара.")
 
     def remove_item(self, product):
         'Удаление товара из магазина'
