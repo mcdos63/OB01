@@ -16,10 +16,18 @@ class Task():
     def status_change(self):
         self.status = not self.status
 
+    def delete(self):
+        if self in self.__class__._instances:
+            self.__class__._instances.remove(self)
+        del self  # Теперь можно безопасно удалять объект
+
     def __del__(self):
         # Удаляем объект из списка экземпляров, если он в нем есть
         if self in self.__class__._instances:
             self.__class__._instances.remove(self)
+
+    def __repr__(self):
+        return f"Task('{self.name}', '{self.date}', {self.status})"
 
 
 t1 = Task("task1")
@@ -32,7 +40,7 @@ t1.status_change()
 print(t2.date, t2.status)
 t1.status_change()
 
-del t2  # Удаляем t2
+t2.delete()  # Удаляем t2
 
 # Печатаем все экземпляры с status = False
 for i in Task.get_instances(False):
@@ -43,7 +51,7 @@ try:
     print('--------delete---------', t2.name, t2.date, t2.status)
 except NameError as e:
     print(f"Ошибка: {e}")
-time.sleep(0)
+
 # Печатаем снова все экземпляры с status = False
 for i in Task.get_instances(False):
     print(i.name, i.date, i.status)
